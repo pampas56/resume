@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PERSONAL PROFILE</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0d10'/><rect x='20' y='35' width='60' height='30' fill='none' stroke='%239aa3b0' stroke-width='3'/></svg>">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#0b0d10;
+    --bg2:#0f1216;
+    --card:rgba(255,255,255,.025);
+    --card-hover:rgba(255,255,255,.05);
+    --border:rgba(255,255,255,.08);
+    --border-strong:rgba(255,255,255,.14);
+    --text:#e8ecf1;
+    --text2:#9aa3b0;
+    --text3:#5a6470;
+    --accent:#8ab4d6;
+    --accent-dim:rgba(138,180,214,.15);
+    --green:#7fb89a;
+    --orange:#d4a574;
+    --red:#c97878;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC','Manrope',-apple-system,sans-serif;overflow-x:hidden;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 80%);
+  }
+  .bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:500px;
+    background:radial-gradient(ellipse,rgba(138,180,214,.08),transparent 60%);pointer-events:none;z-index:0;filter:blur(40px)}
+  main{position:relative;z-index:1}
+
+  /* ===== 顶栏 ===== */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 32px;
+    background:rgba(11,13,16,.7);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.5px;
+  }
+  .topbar .brand{color:var(--text);font-weight:500}
+  .topbar .brand span{color:var(--text3)}
+  .topbar .nav{display:flex;gap:24px}
+  .topbar .nav a{color:var(--text2);text-decoration:none;font-size:12px;transition:.2s;cursor:pointer}
+  .topbar .nav a:hover{color:var(--text)}
+  .status{display:flex;align-items:center;gap:6px;color:var(--text3)}
+  .sdot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green)}
+
+  /* ===== HERO ===== */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+    padding:120px 8% 60px;max-width:1100px;margin:0 auto}
+  .hero .eyebrow{font-family:'JetBrains Mono',monospace;color:var(--text3);font-size:12px;letter-spacing:2px;margin-bottom:24px}
+  .term{
+    width:100%;max-width:640px;
+    background:rgba(255,255,255,.02);border:1px solid var(--border);
+    padding:24px 28px;margin-bottom:36px;
+    font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9;
+  }
+  .term .line{color:var(--text2);white-space:pre-wrap;word-break:break-all;min-height:1.6em}
+  .term .line .ok{color:var(--green)}
+  .term .line .wait{color:var(--orange)}
+  .hero-name{font-family:'Manrope','Noto Sans SC',sans-serif;font-weight:600;
+    font-size:clamp(40px,7vw,80px);color:var(--text);letter-spacing:-.02em;line-height:1.05}
+  .hero-sub{margin-top:16px;font-family:'JetBrains Mono',monospace;color:var(--text3);font-size:13px;letter-spacing:1.5px}
+  .hero-sub b{color:var(--accent);font-weight:400}
+  .hero-slogan{margin-top:20px;font-family:'Noto Sans SC',sans-serif;color:var(--text2);
+    font-size:clamp(15px,2vw,19px);font-weight:400;line-height:1.9;max-width:640px;min-height:1.9em;
+    white-space:pre-line}
+  .hero-slogan .bar{color:var(--text3);margin:0 10px;font-weight:300}
+  .hero-slogan .cursor{display:inline-block;width:8px;height:1em;background:var(--accent);vertical-align:text-bottom;margin-left:2px;animation:blink .9s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .cta{
+    margin-top:40px;display:inline-flex;align-items:center;gap:10px;
+    padding:14px 32px;
+    font-family:'Manrope','Noto Sans SC',sans-serif;font-size:14px;font-weight:500;letter-spacing:.5px;
+    color:var(--text);background:transparent;border:1px solid var(--border-strong);
+    cursor:pointer;transition:.25s;text-decoration:none;
+  }
+  .cta:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+  /* ===== 文件工具栏 ===== */
+  .file-toolbar{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:1px;
+    padding:20px 6% 0}
+  .file-toolbar .btns{display:flex;gap:8px}
+  .mini-btn{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;
+    padding:7px 14px;background:transparent;border:1px solid var(--border);color:var(--text2);
+    cursor:pointer;transition:.2s}
+  .mini-btn:hover{color:var(--text);border-color:var(--border-strong)}
+
+  /* ===== 折叠文件 ===== */
+  .files{max-width:960px;margin:0 auto;padding:14px 6% 60px;display:flex;flex-direction:column;gap:10px}
+  .file{background:var(--card);border:1px solid var(--border);transition:.25s}
+  .file:hover{background:var(--card-hover)}
+  .file.open{border-color:var(--border-strong);background:var(--card-hover)}
+  .file-header{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:pointer;user-select:none}
+  .tri{display:inline-block;width:0;height:0;border-left:6px solid currentColor;
+    border-top:4px solid transparent;border-bottom:4px solid transparent;
+    color:var(--text3);transition:transform .3s,color .2s}
+  .file.open .tri{transform:rotate(90deg);color:var(--accent)}
+  .file-num{font-family:'JetBrains Mono',monospace;color:var(--text3);font-size:11px;letter-spacing:1px;min-width:20px}
+  .file-title{font-family:'Manrope','Noto Sans SC',sans-serif;font-weight:500;font-size:16px;color:var(--text);flex:1}
+  .file-title em{color:var(--text2);font-style:normal;font-weight:400;margin-left:8px;font-size:14px}
+  .file-size{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px}
+  .file.open .file-size{color:var(--green)}
+  .file-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1)}
+  .file.open .file-body{grid-template-rows:1fr}
+  .file-body-inner{overflow:hidden}
+  .file-body-pad{padding:4px 24px 28px 60px}
+
+  /* 隐私警告条 */
+  .privacy-warn{
+    margin-bottom:20px;padding:10px 14px;
+    border-left:2px solid var(--orange);background:rgba(212,165,116,.06);
+    color:var(--orange);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;
+  }
+
+  /* 字段网格 */
+  .field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:4px}
+  .field{border:1px solid var(--border);padding:14px 16px;background:rgba(0,0,0,.15)}
+  .field-k{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase}
+  .field-v{font-size:14px;color:var(--text);font-weight:400}
+  .field-v .ph{color:var(--text3)}
+
+  .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 11px;
+    border:1px solid var(--border);color:var(--text2);background:rgba(0,0,0,.15)}
+  .chip.dim{color:var(--text3)}
+
+  .subhead{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:var(--text3);
+    letter-spacing:1.5px;margin:22px 0 10px;text-transform:uppercase;
+    display:flex;align-items:center;gap:10px}
+  .subhead::before{content:'';width:12px;height:1px;background:var(--text3)}
+  .placeholder-note{color:var(--text3);font-size:12px;font-style:italic;margin-top:8px;font-family:'JetBrains Mono',monospace}
+
+  .personality-block{margin-top:16px;padding:16px 18px;border-left:2px solid var(--accent);background:rgba(0,0,0,.15)}
+  .personality-block .p-line{font-size:14px;color:var(--text);line-height:1.9}
+  .personality-block .p-type{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
+
+  /* 成就项 */
+  .achv-item{padding:14px 0;border-bottom:1px solid var(--border)}
+  .achv-item:last-child{border-bottom:none}
+  .achv-title{font-size:15px;color:var(--text);font-weight:500;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .achv-title .award{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);border:1px solid var(--border-strong);padding:2px 8px}
+  .achv-title .role{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-strong);padding:2px 8px}
+  .achv-proj{font-size:13px;color:var(--text2);margin:6px 0 2px;line-height:1.6}
+  .achv-list{margin:8px 0 6px;padding-left:0;list-style:none}
+  .achv-list li{font-size:13px;color:var(--text);padding:3px 0 3px 16px;position:relative;line-height:1.6}
+  .achv-list li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--text3)}
+  .achv-img{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-top:4px}
+  .achv-img img{display:block;margin-top:8px;max-width:100%;border:1px solid var(--border);background:rgba(0,0,0,.2)}
+  .personality-block .p-line{font-size:14px;color:var(--text);line-height:1.9}
+  .personality-block .p-type{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:1px;margin-bottom:4px}
+
+  /* ===== OUTBOX ===== */
+  .outbox{max-width:960px;margin:40px auto 0;padding:0 6% 80px}
+  .outbox-card{border:1px solid var(--border-strong);background:var(--card);padding:48px 40px}
+  .outbox-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:2px;margin-bottom:12px}
+  .outbox-h{font-family:'Manrope','Noto Sans SC',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:8px}
+  .outbox-sub{color:var(--text2);font-size:14px;margin-bottom:32px}
+  .opento-list{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+  .opento-item{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text)}
+  .opento-item .dot{width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0;opacity:.6}
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
+  .contact-k{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1.5px;margin-bottom:5px;text-transform:uppercase}
+  .contact-v{font-size:14px;color:var(--text)}
+  .contact-v .ph{color:var(--text3)}
+  .btn{display:inline-block;margin-top:28px;padding:12px 28px;
+    font-family:'Manrope','Noto Sans SC',sans-serif;font-size:13px;font-weight:500;letter-spacing:.5px;
+    color:var(--text);border:1px solid var(--border-strong);background:transparent;cursor:pointer;transition:.2s;text-decoration:none}
+  .btn:hover{background:var(--text);color:var(--bg)}
+
+  footer{text-align:center;padding:40px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);
+    border-top:1px solid var(--border);letter-spacing:1px}
+
+  @media(max-width:640px){
+    .topbar{padding:12px 20px}
+    .topbar .nav{display:none}
+    .hero{padding:100px 6% 50px}
+    .files{padding:14px 5% 50px}
+    .file-toolbar{padding:16px 5% 0}
+    .outbox{padding:0 5% 60px}
+    .file-body-pad{padding:4px 18px 22px 32px}
+    .outbox-card{padding:32px 24px}
+    .term{padding:18px 20px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="topbar">
+  <div class="brand">PERSONAL <span>PROFILE</span></div>
+  <div class="nav">
+    <a data-target="files">FILES</a>
+    <a data-target="outbox">OUTBOX</a>
+  </div>
+  <div class="status"><span class="sdot"></span> ONLINE</div>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">// INITIALIZING PROFILE</div>
+    <div class="term" id="term"></div>
+    <h1 class="hero-name" id="heroName" style="display:none">我的说明书📚</h1>
+    <div class="hero-slogan" id="heroSlogan" style="display:none"><span id="sloganText"></span><span class="cursor"></span></div>
+    <div class="hero-sub" id="heroSub" style="display:none">PERSONAL PROFILE · <b>v1.0</b> · 4 FILES AVAILABLE</div>
+    <a class="cta" id="ctaBtn" style="display:none">翻开看看 →</a>
+  </section>
+
+  <!-- 工具栏 -->
+  <div class="file-toolbar">
+    <div>// FILE SYSTEM — 4 ITEMS</div>
+    <div class="btns">
+      <button class="mini-btn" id="expandAll">EXPAND ALL</button>
+      <button class="mini-btn" id="collapseAll">COLLAPSE</button>
+    </div>
+  </div>
+
+  <!-- 4 文件 -->
+  <div class="files" id="files">
+
+    <!-- 01 -->
+    <div class="file">
+      <div class="file-header">
+        <span class="tri"></span>
+        <span class="file-num">01</span>
+        <span class="file-title">基本信息<em>About</em></span>
+        <span class="file-size">LOCKED</span>
+      </div>
+      <div class="file-body"><div class="file-body-inner"><div class="file-body-pad">
+        <div class="privacy-warn">含个人隐私信息，请勿二次转发哦</div>
+        <div class="field-grid">
+          <div class="field"><div class="field-k">姓名 Name</div><div class="field-v">韩奕飞</div></div>
+          <div class="field"><div class="field-k">家乡 Hometown</div><div class="field-v">湖北</div></div>
+          <div class="field"><div class="field-k">专业 Major</div><div class="field-v">智能制造工程 · USTB · 大三</div></div>
+        </div>
+        <div class="subhead">性格 Personality</div>
+        <div class="tag-row">
+          <span class="chip">迭代试错型</span><span class="chip">球场边后卫</span><span class="chip">股票复盘党</span>
+        </div>
+        <div class="personality-block">
+          <div class="p-line p-type">INTJ｜狮子座</div>
+          <div class="p-line">坚持长期主义，不囿于常规，不甘停滞</div>
+          <div class="p-line">持续思考迭代；拿结果说话</div>
+          <div class="p-line">爱玩爱交朋友；拒绝内耗，天天开心</div>
+        </div>
+      </div></div></div>
+    </div>
+
+    <!-- 02 -->
+    <div class="file">
+      <div class="file-header">
+        <span class="tri"></span>
+        <span class="file-num">02</span>
+        <span class="file-title">爱好<em>Hobbies</em></span>
+        <span class="file-size">LOCKED</span>
+      </div>
+      <div class="file-body"><div class="file-body-inner"><div class="file-body-pad">
+        <div class="subhead">旅行 Travel</div>
+        <div class="tag-row"><span class="chip">[ 城市1 ]</span><span class="chip">[ 城市2 ]</span><span class="chip">[ 城市3 ]</span><span class="chip dim">+ 更多</span></div>
+        <div class="subhead">运动 Sports</div>
+        <div class="tag-row"><span class="chip">足球</span><span class="chip dim">[ 其他 ]</span></div>
+        <div class="subhead">音乐 Music</div>
+        <div class="tag-row"><span class="chip dim">[ 风格 / 歌手 ]</span></div>
+        <div class="subhead">游戏 Games</div>
+        <div class="tag-row"><span class="chip dim">[ 游戏名 ]</span></div>
+        <div class="subhead">阅读 Reading</div>
+        <div class="tag-row"><span class="chip dim">[ 方向 / 书单 ]</span></div>
+        <div class="subhead">商业与股票 Business &amp; Stocks</div>
+        <div class="tag-row"><span class="chip dim">[ 关注板块 / 策略 ]</span></div>
+        <div class="subhead">摄影 Photography</div>
+        <div class="tag-row"><span class="chip dim">[ 风格 / 题材 ]</span></div>
+      </div></div></div>
+    </div>
+
+    <!-- 03 -->
+    <div class="file">
+      <div class="file-header">
+        <span class="tri"></span>
+        <span class="file-num">03</span>
+        <span class="file-title">已解锁成就<em>Achievements</em></span>
+        <span class="file-size">LOCKED</span>
+      </div>
+      <div class="file-body"><div class="file-body-inner"><div class="file-body-pad">
+        <div class="tag-row" style="margin-top:0;margin-bottom:18px">
+          <span class="chip">擅长公开答辩</span><span class="chip">项目统筹者</span><span class="chip">细节打磨者</span>
+        </div>
+
+        <div class="subhead">竞赛 Competitions</div>
+
+        <div class="achv-item">
+          <div class="achv-title">节能减排国赛<span class="award">国家一等奖</span></div>
+          <ul class="achv-list">
+            <li>独立完成海水淡化装置设计搭建</li>
+            <li>负责电控部分申报材料编写与美化</li>
+            <li>配合团队完成实验数据记录与装置效果验证</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CDeMbCJmNoeMgPxGb7wcZP9Mn5e" alt="海水淡化装置" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">挑战杯<span class="role">核心成员</span></div>
+          <div class="achv-proj">项目：面向城市复杂交通场景的智能网联汽车应用创新方案设计</div>
+          <ul class="achv-list">
+            <li>负责时空大模型技术模块内容撰写</li>
+            <li>完成申报材料封面制作、图文排版美化</li>
+            <li>担任答辩人，打磨内容并完成现场答辩</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JllwbQLWRo5yyxxcBfzcWrAinXe" alt="挑战杯封面" loading="lazy"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GN3Qb04LooBxuQxys2Ec7Fa2nSg" alt="时空大模型方案" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">数学建模<span class="role">编程手</span></div>
+          <ul class="achv-list">
+            <li>协助团队完成问题拆解，参与模型思路讨论与辅助建模</li>
+            <li>使用编程工具完成数据清洗、运算仿真与结果求解</li>
+            <li>处理模型输出数据，配合组员完成论文图表绘制</li>
+          </ul>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">摇篮杯<span class="role">队长</span></div>
+          <div class="achv-proj">项目：新能源汽车下乡——农村光伏+多车型共享换电模式</div>
+          <ul class="achv-list">
+            <li>负责项目选题、方案设计与团队管理，统筹整体推进</li>
+            <li>设计制作参赛 PPT，提炼项目创新点与技术优势</li>
+            <li>完成项目现场答辩</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GOnPbUGPSon0TuxAbjJcMZDJnMd" alt="新能源汽车下乡项目封面" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">航模赛<span class="role">队长</span></div>
+          <ul class="achv-list">
+            <li>主导整机结构设计，完成实物装配</li>
+            <li>统筹团队分工，协同组员开展调试工作</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UZoHbVEldoiZeYxLAnqcL3ROndg" alt="航模加工实物" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">机器人赛<span class="role">队长</span></div>
+          <ul class="achv-list">
+            <li>负责机器人机械本体结构设计，参与组装优化</li>
+            <li>和电控组对接协作，完成整机调车任务</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MYE8bNr12oqDx3xGxwFcGlipn1d" alt="机器人整体模型图" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">物流设计赛<span class="role">队长</span></div>
+          <ul class="achv-list">
+            <li>开展文献调研，主导整体方案确定</li>
+            <li>负责申报材料封面设计、排版美化</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Oi7rbeG7hov3uVxGqhHcyYTenhb" alt="平急融合协同联智申报文档页" loading="lazy"></div>
+        </div>
+
+        <div class="achv-item">
+          <div class="achv-title">机创赛<span class="role">队长</span></div>
+          <div class="achv-proj">赛道：仿生蝴蝶</div>
+          <ul class="achv-list">
+            <li>负责仿生蝴蝶机械结构设计，完成样机装配调试</li>
+          </ul>
+          <div class="achv-img"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/H5ApbZclMofwaFxgQ27c4oeEnIh" alt="仿生蝴蝶三维效果图" loading="lazy"></div>
+        </div>
+
+        <div class="subhead">科研 Research</div>
+        <div class="placeholder-note">待补充科研课题、项目、论文相关经历</div>
+
+        <div class="subhead">技能 Skills</div>
+        <div class="placeholder-note">待补充编程、软件、专业工具等硬技能</div>
+      </div></div></div>
+    </div>
+
+    <!-- 04 -->
+    <div class="file">
+      <div class="file-header">
+        <span class="tri"></span>
+        <span class="file-num">04</span>
+        <span class="file-title">未来想成为<em>Future Self</em></span>
+        <span class="file-size">LOCKED</span>
+      </div>
+      <div class="file-body"><div class="file-body-inner"><div class="file-body-pad">
+        <div class="subhead">未来方向 Future Direction</div>
+        <div class="tag-row">
+          <span class="chip">保研 / 申港</span>
+          <span class="chip">财富积累</span>
+          <span class="chip">精神状态稳定</span>
+          <span class="chip">同频交友</span>
+          <span class="chip">持续阅读</span>
+          <span class="chip">继续旅行</span>
+        </div>
+        <div class="placeholder-note">// 后续替换为你真实的愿望清单或座右铭</div>
+      </div></div></div>
+    </div>
+
+  </div>
+
+  <!-- OUTBOX -->
+  <div class="outbox" id="outbox">
+    <div class="outbox-card">
+      <div class="outbox-label">// OUTBOX — OPEN TO CONNECT</div>
+      <h2 class="outbox-h">开放联系</h2>
+      <p class="outbox-sub">如果你看到这里，说明我们可能聊得来。</p>
+      <div class="opento-list">
+        <div class="opento-item"><span class="dot"></span> 科研交流 / 数模 / 氢能商用车方向</div>
+        <div class="opento-item"><span class="dot"></span> 股票复盘 / 商业交流</div>
+        <div class="opento-item"><span class="dot"></span> 球友 / 摄影 / 旅行搭子</div>
+        <div class="opento-item"><span class="dot"></span> 保研 &amp; 申港路径交流</div>
+      </div>
+      <div class="contact-grid">
+        <div><div class="contact-k">电话 Phone</div><div class="contact-v"><span class="ph">[ 电话 ]</span></div></div>
+        <div><div class="contact-k">邮箱 Email</div><div class="contact-v"><span class="ph">[ 邮箱 ]</span></div></div>
+        <div><div class="contact-k">抖音 Douyin</div><div class="contact-v"><span class="ph">[ 抖音号 ]</span></div></div>
+      </div>
+      <a class="btn" href="javascript:void(0)" id="copyBtn">复制微信号</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © 2026 PERSONAL PROFILE · BUILT FOR WECHAT
+</footer>
+
+<script>
+/* ===== 终端启动打字机 ===== */
+const bootLines=[
+  {t:'正在初始化个人档案...',c:''},
+  {t:'[OK] 身份模块已加载',c:'ok'},
+  {t:'[OK] 兴趣模块已加载',c:'ok'},
+  {t:'[OK] 成就模块已加载',c:'ok'},
+  {t:'[OK] 愿望模块已加载',c:'ok'},
+  {t:'[WAIT] 等待访问者解锁...',c:'wait'},
+];
+const term=document.getElementById('term');
+let bi=0;
+function typeBoot(){
+  if(bi<bootLines.length){
+    const l=bootLines[bi];
+    const div=document.createElement('div');div.className='line';
+    if(l.c==='ok')div.innerHTML=l.t.replace('[OK]','<span class="ok">[OK]</span>');
+    else if(l.c==='wait')div.innerHTML=l.t.replace('[WAIT]','<span class="wait">[WAIT]</span>');
+    else div.textContent=l.t;
+    term.appendChild(div);
+    bi++;
+    setTimeout(typeBoot,360);
+  }else{
+    document.getElementById('heroName').style.display='block';
+    setTimeout(startSlogan,400);
+  }
+}
+
+/* ===== 电梯自我介绍打字机 ===== */
+const sloganFull='北科大智能制造大三｜努力扮演一个成年人 ing\n正在找能聊得来、能一起搞点事的人';
+const sloganEl=document.getElementById('sloganText');
+function startSlogan(){
+  document.getElementById('heroSlogan').style.display='block';
+  let si=0;
+  function tick(){
+    if(si<=sloganFull.length){
+      sloganEl.textContent=sloganFull.slice(0,si);
+      si++;
+      setTimeout(tick,60);
+    }else{
+      // 打完后，给竖线上色
+      document.getElementById('heroSub').style.display='block';
+      document.getElementById('ctaBtn').style.display='inline-flex';
+    }
+  }
+  tick();
+}
+typeBoot();
+
+/* ===== 折叠 ===== */
+const files=document.querySelectorAll('.file');
+function toggle(f,open){
+  if(open===undefined)f.classList.toggle('open');
+  else f.classList.toggle('open',open);
+  f.querySelector('.file-size').textContent=f.classList.contains('open')?'OPEN':'LOCKED';
+}
+files.forEach(f=>f.querySelector('.file-header').addEventListener('click',()=>toggle(f)));
+document.getElementById('expandAll').addEventListener('click',()=>files.forEach(f=>toggle(f,true)));
+document.getElementById('collapseAll').addEventListener('click',()=>files.forEach(f=>toggle(f,false)));
+
+/* ===== 导航 ===== */
+document.querySelectorAll('[data-target]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.getElementById(a.getAttribute('data-target'));
+    if(t)setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),200);
+  });
+});
+document.getElementById('ctaBtn').addEventListener('click',()=>{
+  document.getElementById('files').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+/* ===== 复制 ===== */
+document.getElementById('copyBtn').addEventListener('click',()=>{
+  const t='YOUR_WECHAT_ID';
+  function flash(){const b=document.getElementById('copyBtn');const old=b.textContent;
+    b.textContent='已复制 ✓';setTimeout(()=>b.textContent=old,1500);}
+  function fb(){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta);}
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(flash).catch(()=>{fb();flash();})}else{fb();flash();}
+});
+</script>
+</body>
+</html>
